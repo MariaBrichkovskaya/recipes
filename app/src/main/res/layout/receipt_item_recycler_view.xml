@@ -1,0 +1,33 @@
+<!-- item_dish.xml -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/imageViewDish"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/pasta"
+        android:elevation="4dp"/>
+
+    <TextView
+        android:id="@+id/textViewDishName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Название блюда"
+        android:textSize="25sp"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:id="@+id/textViewCookingTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="30 мин"
+        android:textSize="20sp"
+        android:textColor="@color/gray"/>
+
+</LinearLayout>
