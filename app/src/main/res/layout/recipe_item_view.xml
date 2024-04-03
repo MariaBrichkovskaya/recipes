@@ -19,10 +19,12 @@
             <ImageView
                 android:id="@+id/dish_image"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:scaleType="centerCrop"
+                android:layout_height="120dp"
+                android:scaleType="center"
                 android:src="@drawable/pasta"
-                android:elevation="4dp"/>
+                android:elevation="4dp"
+                android:adjustViewBounds="true"/>
+
 
             <TextView
                 android:id="@+id/dish_name"
@@ -37,6 +39,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Время приготовления: 30 мин"
+                android:textSize="14sp"
+                android:textColor="@color/gray"/>
+            <TextView
+                android:id="@+id/calories_tw"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="500 kkal"
                 android:textSize="14sp"
                 android:textColor="@color/gray"/>
 

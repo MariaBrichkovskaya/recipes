@@ -8,10 +8,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.receipts.databinding.RecipeItemViewBinding
+import com.example.receipts.model.RecipeCollections
 
-class RecipeListAdapter(private var recipeModelList: List<Recipe>, private val listener: OnItemClickListener) :
+class RecipeListAdapter( private val listener: OnItemClickListener) :
     RecyclerView.Adapter<RecipeListAdapter.ViewHolder>() {
-
+    private var recipeModelList = mutableListOf<Recipe>()
     interface OnItemClickListener {
         fun onItemClick(recipe: Recipe)
     }
@@ -26,10 +27,11 @@ class RecipeListAdapter(private var recipeModelList: List<Recipe>, private val l
         @SuppressLint("SetTextI18n")
         fun bind(model: Recipe) {
             binding.apply {
-                dishName.text = model.name
-                dishTime.text = "${model.category} min"
+                dishName.text = model.label
+                caloriesTw.text="${model.calories.toInt()} kkal"
+                dishTime.text = "${model.totalTime} min"
                 Glide.with(itemView)
-                    .load(model.imageUrl)
+                    .load(model.image)
                     .centerCrop()
                     .into(dishImage)
                 root.setOnClickListener {
