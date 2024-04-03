@@ -9,6 +9,7 @@ import com.example.receipts.R
 
 class RecipeFragment : Fragment() {
 
+    //lateinit var recipeViewModel: RecipeViewModel
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
