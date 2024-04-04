@@ -10,25 +10,31 @@ import com.bumptech.glide.Glide
 import com.example.receipts.databinding.RecipeItemViewBinding
 import com.example.receipts.model.RecipeCollections
 
-class RecipeListAdapter( private val listener: OnItemClickListener) :
+class RecipeListAdapter(private val listener: OnItemClickListener) :
     RecyclerView.Adapter<RecipeListAdapter.ViewHolder>() {
     private var recipeModelList = mutableListOf<Recipe>()
+
     interface OnItemClickListener {
         fun onItemClick(recipe: Recipe)
     }
+
     @SuppressLint("NotifyDataSetChanged")
-    fun setRecipes(recipes :List<Recipe>){
+    fun setRecipes(recipes: List<Recipe>) {
         this.recipeModelList = recipes.toMutableList()
         notifyDataSetChanged()
     }
 
-    class ViewHolder(private val binding: RecipeItemViewBinding, private val listener: OnItemClickListener) :
+
+    class ViewHolder(
+        private val binding: RecipeItemViewBinding,
+        private val listener: OnItemClickListener
+    ) :
         RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
         fun bind(model: Recipe) {
             binding.apply {
                 dishName.text = model.label
-                caloriesTw.text="${model.calories.toInt()} kkal"
+                caloriesTw.text = "${model.calories.toInt()} kkal"
                 dishTime.text = "${model.totalTime} min"
                 Glide.with(itemView)
                     .load(model.image)
@@ -43,7 +49,8 @@ class RecipeListAdapter( private val listener: OnItemClickListener) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = RecipeItemViewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            RecipeItemViewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding, listener)
     }
 

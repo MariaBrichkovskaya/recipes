@@ -7,11 +7,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.receipts.databinding.IngredientItemViewBinding
 import com.example.receipts.model.Ingredient
 
-class IngredientAdapter (val list: ArrayList<Ingredient>): RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder>(){
-    inner class IngredientViewHolder (val binding: IngredientItemViewBinding) :RecyclerView.ViewHolder(binding.root) {
+class IngredientAdapter(val list: ArrayList<Ingredient>) :
+    RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder>() {
+    inner class IngredientViewHolder(val binding: IngredientItemViewBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
-        fun bind(ingredient: Ingredient){
-            with(binding){
+        fun bind(ingredient: Ingredient) {
+            with(binding) {
                 flavorName.text = ingredient.text
                 flavorWieght.text = "${ingredient.weight.toInt()} gram"
             }
@@ -19,7 +21,8 @@ class IngredientAdapter (val list: ArrayList<Ingredient>): RecyclerView.Adapter<
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IngredientViewHolder {
-        val binding = IngredientItemViewBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        val binding =
+            IngredientItemViewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return IngredientViewHolder(binding)
     }
 

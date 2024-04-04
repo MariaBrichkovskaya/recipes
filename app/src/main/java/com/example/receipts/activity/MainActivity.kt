@@ -1,8 +1,8 @@
 package com.example.receipts.activity
 
 import android.content.pm.ActivityInfo
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.example.receipts.R
 
 class MainActivity : AppCompatActivity() {

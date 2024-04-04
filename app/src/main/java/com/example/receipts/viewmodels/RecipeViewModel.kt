@@ -2,24 +2,19 @@ package com.example.receipts.viewmodels
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.receipts.model.Hit
 import com.example.receipts.model.Recipe
-import com.example.receipts.model.RecipeCollections
 import com.example.receipts.service.RecipeRepository
-import com.example.receipts.service.RetrofitService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
-class RecipeViewModel(private val recipeRepository: RecipeRepository): ViewModel() {
+class RecipeViewModel(private val recipeRepository: RecipeRepository, var search: String) :
+    ViewModel() {
     val errorMessage = MutableLiveData<String>()
     val recipesList = MutableLiveData<List<Recipe>>()
-    val loading = MutableLiveData<Boolean>()
+    private val loading = MutableLiveData<Boolean>()
     private var job: Job? = null
 
     fun getAllRecipes() {
@@ -28,7 +23,9 @@ class RecipeViewModel(private val recipeRepository: RecipeRepository): ViewModel
                 val response = recipeRepository.getList()
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful) {
-                        recipesList.postValue(response.body()?.hits?.map { it.recipe })
+                        val filteredRecipes = response.body()?.hits?.map { it.recipe }
+                            ?.filter { it.label.lowercase().contains(search.lowercase()) }
+                        recipesList.postValue(filteredRecipes ?: listOf())
                         loading.value = false
                     } else {
                         onError("Error : ${response.message()}")
@@ -39,7 +36,7 @@ class RecipeViewModel(private val recipeRepository: RecipeRepository): ViewModel
             }
         }
     }
-
+    
     private fun onError(message: String) {
         errorMessage.value = message
         loading.value = false
