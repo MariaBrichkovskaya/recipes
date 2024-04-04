@@ -4,11 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.MainFragment">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -19,7 +21,7 @@
                 android:src="@drawable/search_icon"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:padding="8dp"/>
+                android:padding="8dp" />
 
             <EditText
                 android:id="@+id/search_edit_text"
@@ -27,28 +29,36 @@
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/search_icon"
                 android:hint="@string/search"
-                android:inputType="text"/>
+                android:inputType="text" />
 
         </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/favorite_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/favorite_recipes"
+                android:background="@drawable/rounded_corner" />
+
             <ProgressBar
                 android:id="@+id/progress_bar"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_centerInParent="true"
                 android:visibility="gone" />
+
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/receipt_recycler_view"
+                android:id="@+id/recipe_recycler_view"
                 android:layout_width="match_parent"
                 tools:listitem="@layout/recipe_item_view"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"/>
+                android:layout_marginTop="16dp" />
         </RelativeLayout>
     </LinearLayout>
-
 
 
 </FrameLayout>

@@ -14,7 +14,6 @@ import com.example.receipts.adapter.RecipeListAdapter
 import com.example.receipts.databinding.FragmentMainBinding
 import com.example.receipts.model.Recipe
 import com.example.receipts.service.RecipeRepository
-import com.example.receipts.service.RetrofitService
 import com.example.receipts.viewmodels.RecipeViewModel
 import com.example.receipts.viewmodels.RecipeViewModelFactory
 
@@ -33,16 +32,18 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val retrofitService = RetrofitService.getInstance()
         binding.progressBar.visibility = View.GONE
         viewModel =
-            ViewModelProvider(this, RecipeViewModelFactory(RecipeRepository(retrofitService))).get(
+            ViewModelProvider(this, RecipeViewModelFactory(RecipeRepository())).get(
                 RecipeViewModel::class.java
             )
         recipeListAdapter = RecipeListAdapter(object : RecipeListAdapter.OnItemClickListener {
             override fun onItemClick(recipe: Recipe) {
                 val fragment = RecipeFragment()
                 val bundle = Bundle()
+                bundle.putString("source", recipe.source)
+                bundle.putString("time", recipe.totalTime)
+                bundle.putString("uri", recipe.uri)
                 bundle.putString("name", recipe.label)
                 bundle.putString("image", recipe.image)
                 bundle.putInt("calories", recipe.calories.toInt())
@@ -55,8 +56,14 @@ class MainFragment : Fragment() {
             }
         })
         binding.apply {
-            receiptRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-            receiptRecyclerView.adapter = recipeListAdapter
+            recipeRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+            recipeRecyclerView.adapter = recipeListAdapter
+            favoriteBtn.setOnClickListener {//пока чисто для теста!!!
+                val transaction = requireActivity().supportFragmentManager.beginTransaction()
+                transaction.replace(R.id.fragment_container, FavoritesFragment())
+                transaction.addToBackStack(null)
+                transaction.commit()
+            }
             searchEditText.addTextChangedListener(object : TextWatcher {
                 override fun afterTextChanged(s: Editable?) {
                     viewModel.search = s.toString()

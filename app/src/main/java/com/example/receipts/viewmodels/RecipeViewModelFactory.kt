@@ -8,7 +8,15 @@ class RecipeViewModelFactory(private val repository: RecipeRepository) :
     ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return if (modelClass.isAssignableFrom(RecipeViewModel::class.java)) {
-            RecipeViewModel(this.repository, "") as T
+            RecipeViewModel(
+                this.repository,
+                search = "",
+                mealType = listOf(),
+                cuisineType = listOf(),
+                calories = "",
+                numOfIngredients = "",
+                time = ""
+            ) as T
         } else {
             throw IllegalArgumentException("ViewModel Not Found")
         }

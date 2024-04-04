@@ -10,7 +10,15 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class RecipeViewModel(private val recipeRepository: RecipeRepository, var search: String) :
+class RecipeViewModel(
+    private val recipeRepository: RecipeRepository,
+    var search: String,
+    var mealType: List<String>,
+    var cuisineType: List<String>,
+    var numOfIngredients: String,
+    var time: String,
+    var calories: String
+) :
     ViewModel() {
     val errorMessage = MutableLiveData<String>()
     val recipesList = MutableLiveData<List<Recipe>>()
@@ -20,12 +28,24 @@ class RecipeViewModel(private val recipeRepository: RecipeRepository, var search
     fun getAllRecipes() {
         job = CoroutineScope(Dispatchers.IO).launch {
             try {
-                val response = recipeRepository.getList()
+                if (search.isEmpty()) search = "chicken"
+                if (mealType.isEmpty()) mealType =
+                    listOf("Dinner", "Lunch", "Breakfast", "Snack", "Teatime")
+                if (cuisineType.isEmpty()) cuisineType = listOf("American", "Asian", "British")
+                if (numOfIngredients.isEmpty()) numOfIngredients = "1+"
+                if (time.isEmpty()) time = "1+"
+                if (calories.isEmpty()) calories = "1+"
+                val response = recipeRepository.getList(
+                    searchingString = search.lowercase(),
+                    mealType = mealType,
+                    cuisineType = cuisineType,
+                    numOfIngredients = numOfIngredients,
+                    time = time,
+                    calories = calories
+                )
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful) {
-                        val filteredRecipes = response.body()?.hits?.map { it.recipe }
-                            ?.filter { it.label.lowercase().contains(search.lowercase()) }
-                        recipesList.postValue(filteredRecipes ?: listOf())
+                        recipesList.postValue(response.body()?.hits?.map { it.recipe })
                         loading.value = false
                     } else {
                         onError("Error : ${response.message()}")
@@ -36,7 +56,7 @@ class RecipeViewModel(private val recipeRepository: RecipeRepository, var search
             }
         }
     }
-    
+
     private fun onError(message: String) {
         errorMessage.value = message
         loading.value = false
