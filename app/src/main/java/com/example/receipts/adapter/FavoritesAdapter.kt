@@ -6,33 +6,33 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.receipts.databinding.RecipeItemViewBinding
-import com.example.receipts.model.Recipe
+import com.example.receipts.model.RecipeEntity
 
-class RecipeListAdapter(private val listener: OnItemClickListener) :
-    RecyclerView.Adapter<RecipeListAdapter.ViewHolder>() {
-    private var recipeModelList = mutableListOf<Recipe>()
-
-    interface OnItemClickListener {
-        fun onItemClick(recipe: Recipe)
-    }
+class FavoritesAdapter(listener: OnItemClickListener) :
+    RecyclerView.Adapter<FavoritesAdapter.FavoritesViewHolder>() {
+    private var listenerContact: OnItemClickListener = listener
+    private var recipeModelList = mutableListOf<RecipeEntity>()
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setRecipes(recipes: List<Recipe>) {
+    fun setRecipes(recipes: List<RecipeEntity>) {
         this.recipeModelList = recipes.toMutableList()
         notifyDataSetChanged()
     }
 
+    interface OnItemClickListener {
+        fun onItemClick(recipeEntity: RecipeEntity)
+    }
 
-    class ViewHolder(
+    class FavoritesViewHolder(
         private val binding: RecipeItemViewBinding,
         private val listener: OnItemClickListener
     ) :
         RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
-        fun bind(model: Recipe) {
+        fun bind(model: RecipeEntity) {
             binding.apply {
                 dishName.text = model.label
-                caloriesTw.text = "${model.calories} kcal"
+                caloriesTw.text = "${model.calories.toInt()} kcal"
                 dishTime.text = "${model.totalTime} min"
                 Glide.with(itemView)
                     .load(model.image)
@@ -46,18 +46,18 @@ class RecipeListAdapter(private val listener: OnItemClickListener) :
 
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoritesViewHolder {
         val binding =
             RecipeItemViewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(binding, listener)
+        return FavoritesViewHolder(binding, listenerContact)
     }
 
     override fun getItemCount(): Int {
         return recipeModelList.size
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(recipeModelList[position])
+    override fun onBindViewHolder(holder: FavoritesViewHolder, position: Int) {
+        val recipe: RecipeEntity = recipeModelList[position]
+        holder.bind(recipe)
     }
-
 }

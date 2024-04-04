@@ -1,7 +1,30 @@
 <resources>
     <string name="app_name">My Recipes</string>
-<!-- TODO: Remove or change this placeholder text -->
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="scroll_recipe_here">Scroll Recipe Here...</string>
     <string name="search">Search...</string>
+    <string name="favorite_recipes">Favorite recipes</string>
+    <string name="choose_calories_range">Choose calories range</string>
+    <string name="max">Max</string>
+    <string name="min">Min</string>
+    <string name="choose_range_of_ingredient_amount">Choose range of ingridient amount</string>
+    <string name="choose_meal_type">Choose meal type</string>
+    <string name="dinner">Dinner</string>
+    <string name="lunch">Lunch</string>
+    <string name="choose_cuisine_type">Choose cuisine type</string>
+    <string name="american">American</string>
+    <string name="asian">Asian</string>
+    <string name="breakfast">Breakfast</string>
+    <string name="snack">Snack</string>
+    <string name="teatime">Teatime</string>
+    <string name="british">British</string>
+    <string name="caribbean">Caribbean</string>
+    <string name="central_europe">Central Europe</string>
+    <string name="chinese">Chinese</string>
+    <string name="eastern_europe">Eastern Europe</string>
+    <string name="french">French</string>
+    <string name="indian">Indian</string>
+    <string name="italian">Italian</string>
+    <string name="choose_time_range">Choose time range</string>
 </resources>
