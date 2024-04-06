@@ -36,14 +36,26 @@
         </RelativeLayout>
 
         <Button
-            android:id="@+id/favorite_btn"
+            android:id="@+id/reset_filter_btn"
             android:layout_width="125dp"
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_corner"
-            android:text="@string/favorite_recipes"
-            app:layout_constraintTop_toBottomOf="@id/search_layout"
+            android:text="Reset filter"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.821"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/search_layout" />
+
+        <Button
+            android:id="@+id/favorite_btn"
+            android:layout_width="125dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="48dp"
+            android:background="@drawable/rounded_corner"
+
+            android:text="@string/favorite_recipes"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/search_layout" />
 
         <ProgressBar
             android:id="@+id/progress_bar"

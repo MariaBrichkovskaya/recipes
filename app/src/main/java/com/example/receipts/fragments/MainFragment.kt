@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -70,6 +71,13 @@ class MainFragment : Fragment() {
                 transaction.addToBackStack(null)
                 transaction.commit()
             }
+            resetFilterBtn.setOnClickListener {
+                viewModel.time = "1+"
+                viewModel.cuisineType = listOf()
+                viewModel.calories = "1+"
+                viewModel.mealType = listOf()
+                viewModel.getAllRecipes()
+            }
             searchEditText.addTextChangedListener(object : TextWatcher {
                 override fun afterTextChanged(s: Editable?) {
                     viewModel.search = s.toString()
@@ -115,19 +123,34 @@ class MainFragment : Fragment() {
                 val minTime = timeMinEditText.text.toString().toIntOrNull()
                 val maxTime = timeMaxEditText.text.toString().toIntOrNull()
 
+                val mealTypeLinearLayout =
+                    filterView.findViewById<LinearLayout>(R.id.meal_type_linear_layout)
                 val selectedMealTypes = mutableListOf<String>()
-                val mealTypeCheckbox1 = filterView.findViewById<CheckBox>(R.id.mealTypeCheckbox1)
-                val mealTypeCheckbox2 = filterView.findViewById<CheckBox>(R.id.mealTypeCheckbox2)
-                val mealTypeCheckbox3 = filterView.findViewById<CheckBox>(R.id.mealTypeCheckbox3)
-                val mealTypeCheckbox4 = filterView.findViewById<CheckBox>(R.id.mealTypeCheckbox4)
-                val mealTypeCheckbox5 = filterView.findViewById<CheckBox>(R.id.mealTypeCheckbox5)
 
-                if (mealTypeCheckbox1.isChecked) selectedMealTypes.add(mealTypeCheckbox1.text.toString())
-                if (mealTypeCheckbox2.isChecked) selectedMealTypes.add(mealTypeCheckbox2.text.toString())
-                if (mealTypeCheckbox3.isChecked) selectedMealTypes.add(mealTypeCheckbox3.text.toString())
-                if (mealTypeCheckbox4.isChecked) selectedMealTypes.add(mealTypeCheckbox4.text.toString())
-                if (mealTypeCheckbox5.isChecked) selectedMealTypes.add(mealTypeCheckbox5.text.toString())
+                for (i in 0 until mealTypeLinearLayout.childCount) {
+                    val childView = mealTypeLinearLayout.getChildAt(i)
+                    if (childView is CheckBox) {
+                        if (childView.isChecked) {
+                            selectedMealTypes.add(childView.text.toString())
+                        }
+                    }
+                }
                 viewModel.mealType = selectedMealTypes
+
+                val cuisineLinearLayout =
+                    filterView.findViewById<LinearLayout>(R.id.cuisine_linear_layout)
+                val selectedCuisineTypes = mutableListOf<String>()
+
+                for (i in 0 until cuisineLinearLayout.childCount) {
+                    val childView = cuisineLinearLayout.getChildAt(i)
+                    if (childView is CheckBox) {
+                        if (childView.isChecked) {
+                            selectedCuisineTypes.add(childView.text.toString())
+                        }
+                    }
+                }
+                viewModel.cuisineType = selectedCuisineTypes
+
                 setCalories(minCalories, maxCalories)
                 setTime(minTime, maxTime)
                 viewModel.getAllRecipes()
@@ -142,27 +165,31 @@ class MainFragment : Fragment() {
     }
 
     private fun setCalories(minCalories: Int?, maxCalories: Int?) {
-        if (minCalories == null) {
+        if (minCalories == null && maxCalories == null) {
+            return
+        } else if (minCalories == null) {
             viewModel.calories = "$maxCalories"
         } else if (maxCalories == null) {
             viewModel.calories = "$minCalories+"
         } else if (minCalories < maxCalories) {
             viewModel.calories = "$minCalories-$maxCalories"
         } else {
-            Toast.makeText(requireContext(), "Incorrect min and max", Toast.LENGTH_SHORT)
+            Toast.makeText(requireContext(), "Incorrect range for calories", Toast.LENGTH_SHORT)
                 .show()
         }
     }
 
     private fun setTime(minTime: Int?, maxTime: Int?) {
-        if (minTime == null) {
+        if (minTime == null && maxTime == null) {
+            return
+        } else if (minTime == null) {
             viewModel.time = "$maxTime"
         } else if (maxTime == null) {
             viewModel.time = "$minTime+"
         } else if (minTime < maxTime) {
             viewModel.time = "$minTime-$maxTime"
         } else {
-            Toast.makeText(requireContext(), "Incorrect min and max", Toast.LENGTH_SHORT)
+            Toast.makeText(requireContext(), "Incorrect range for time", Toast.LENGTH_SHORT)
                 .show()
         }
     }

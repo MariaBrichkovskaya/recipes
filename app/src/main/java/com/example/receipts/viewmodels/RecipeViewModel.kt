@@ -27,7 +27,7 @@ class RecipeViewModel(
     fun getAllRecipes() {
         job = CoroutineScope(Dispatchers.IO).launch {
             try {
-                if (search.isEmpty()) search = "chicken"
+                if (search.isEmpty()) search = ""
                 if (mealType.isEmpty()) mealType =
                     listOf("Dinner", "Lunch", "Breakfast", "Snack", "Teatime")
                 if (cuisineType.isEmpty()) cuisineType = listOf(
