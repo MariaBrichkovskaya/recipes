@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.receipts.R
@@ -13,14 +14,15 @@ import com.example.receipts.databinding.FragmentFavoritesBinding
 import com.example.receipts.db.RecipeDatabase
 import com.example.receipts.model.RecipeEntity
 import com.example.receipts.viewmodels.DBViewModel
-import com.example.receipts.viewmodels.DBViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class FavoritesFragment : Fragment() {
 
     private lateinit var binding: FragmentFavoritesBinding
     private lateinit var recipeListAdapter: FavoritesAdapter
 
-    private lateinit var viewModel: DBViewModel
+    private val viewModel: DBViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,10 +34,7 @@ class FavoritesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val database = RecipeDatabase.getInstance(requireContext())
-        viewModel = ViewModelProvider(this, DBViewModelFactory(database.recipeDao())).get(
-            DBViewModel::class.java
-        )
+
         recipeListAdapter =
             FavoritesAdapter(
                 object : FavoritesAdapter.OnItemClickListener {
@@ -67,7 +66,6 @@ class FavoritesFragment : Fragment() {
             recipeListAdapter.setRecipes(it)
         }
         viewModel.getAllRecipes()
-
 
     }
 

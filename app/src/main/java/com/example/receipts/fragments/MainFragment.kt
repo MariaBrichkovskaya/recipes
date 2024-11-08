@@ -14,6 +14,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.receipts.R
@@ -22,11 +23,11 @@ import com.example.receipts.databinding.FragmentMainBinding
 import com.example.receipts.model.Recipe
 import com.example.receipts.service.RecipeRepository
 import com.example.receipts.viewmodels.RecipeViewModel
-import com.example.receipts.viewmodels.RecipeViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class MainFragment : Fragment() {
-    lateinit var viewModel: RecipeViewModel
+    private val viewModel: RecipeViewModel by viewModels()
     private lateinit var binding: FragmentMainBinding
     private lateinit var recipeListAdapter: RecipeListAdapter
     override fun onCreateView(
@@ -40,10 +41,6 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.progressBar.visibility = View.GONE
-        viewModel =
-            ViewModelProvider(this, RecipeViewModelFactory(RecipeRepository())).get(
-                RecipeViewModel::class.java
-            )
         recipeListAdapter = RecipeListAdapter(object : RecipeListAdapter.OnItemClickListener {
             override fun onItemClick(recipe: Recipe) {
                 val fragment = RecipeFragment()
@@ -72,15 +69,15 @@ class MainFragment : Fragment() {
                 transaction.commit()
             }
             resetFilterBtn.setOnClickListener {
-                viewModel.time = "1+"
-                viewModel.cuisineType = listOf()
-                viewModel.calories = "1+"
-                viewModel.mealType = listOf()
+                viewModel.filterParams.time = "1+"
+                viewModel.filterParams.cuisineType = listOf()
+                viewModel.filterParams.calories = "1+"
+                viewModel.filterParams.mealType = listOf()
                 viewModel.getAllRecipes()
             }
             searchEditText.addTextChangedListener(object : TextWatcher {
                 override fun afterTextChanged(s: Editable?) {
-                    viewModel.search = s.toString()
+                    viewModel.filterParams.search = s.toString()
                     viewModel.getAllRecipes()
                 }
 
@@ -135,7 +132,7 @@ class MainFragment : Fragment() {
                         }
                     }
                 }
-                viewModel.mealType = selectedMealTypes
+                viewModel.filterParams.mealType = selectedMealTypes
 
                 val cuisineLinearLayout =
                     filterView.findViewById<LinearLayout>(R.id.cuisine_linear_layout)
@@ -149,7 +146,7 @@ class MainFragment : Fragment() {
                         }
                     }
                 }
-                viewModel.cuisineType = selectedCuisineTypes
+                viewModel.filterParams.cuisineType = selectedCuisineTypes
 
                 setCalories(minCalories, maxCalories)
                 setTime(minTime, maxTime)
@@ -168,11 +165,11 @@ class MainFragment : Fragment() {
         if (minCalories == null && maxCalories == null) {
             return
         } else if (minCalories == null) {
-            viewModel.calories = "$maxCalories"
+            viewModel.filterParams.calories = "$maxCalories"
         } else if (maxCalories == null) {
-            viewModel.calories = "$minCalories+"
+            viewModel.filterParams.calories = "$minCalories+"
         } else if (minCalories < maxCalories) {
-            viewModel.calories = "$minCalories-$maxCalories"
+            viewModel.filterParams.calories = "$minCalories-$maxCalories"
         } else {
             Toast.makeText(requireContext(), "Incorrect range for calories", Toast.LENGTH_SHORT)
                 .show()
@@ -183,11 +180,11 @@ class MainFragment : Fragment() {
         if (minTime == null && maxTime == null) {
             return
         } else if (minTime == null) {
-            viewModel.time = "$maxTime"
+            viewModel.filterParams.time = "$maxTime"
         } else if (maxTime == null) {
-            viewModel.time = "$minTime+"
+            viewModel.filterParams.time = "$minTime+"
         } else if (minTime < maxTime) {
-            viewModel.time = "$minTime-$maxTime"
+            viewModel.filterParams.time = "$minTime-$maxTime"
         } else {
             Toast.makeText(requireContext(), "Incorrect range for time", Toast.LENGTH_SHORT)
                 .show()

@@ -6,8 +6,10 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.example.receipts.model.RecipeEntity
+import javax.inject.Singleton
 
 @Dao
+@Singleton
 interface RecipeDao {
     @Query("SELECT * FROM recipes WHERE label = :label")
     fun getByLabel(label: String): LiveData<RecipeEntity?>
