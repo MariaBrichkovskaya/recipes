@@ -4,21 +4,19 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.receipts.model.Recipe
 import com.example.receipts.service.RecipeRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class RecipeViewModel(
+@HiltViewModel
+class RecipeViewModel @Inject constructor(
     private val recipeRepository: RecipeRepository,
-    var search: String,
-    var mealType: List<String>,
-    var cuisineType: List<String>,
-    var time: String,
-    var calories: String
-) :
-    ViewModel() {
+    val filterParams: RecipeFilterParams
+) : ViewModel() {
     val errorMessage = MutableLiveData<String>()
     val recipesList = MutableLiveData<List<Recipe>>()
     private val loading = MutableLiveData<Boolean>()
@@ -27,23 +25,23 @@ class RecipeViewModel(
     fun getAllRecipes() {
         job = CoroutineScope(Dispatchers.IO).launch {
             try {
-                if (search.isEmpty()) search = ""
-                if (mealType.isEmpty()) mealType =
+                if (filterParams.search.isEmpty()) filterParams.search = ""
+                if (filterParams.mealType.isEmpty()) filterParams.mealType =
                     listOf("Dinner", "Lunch", "Breakfast", "Snack", "Teatime")
-                if (cuisineType.isEmpty()) cuisineType = listOf(
+                if (filterParams.cuisineType.isEmpty()) filterParams.cuisineType = listOf(
                     "American", "Asian", "British", "Caribbean", "Central Europe", "Chinese",
                     "Eastern Europe", "French", "Indian", "Italian", "Japanese", "Kosher",
                     "Mediterranean", "Mexican", "Middle Eastern", "Nordic", "South American",
                     "South East Asian"
                 )
-                if (time.isEmpty()) time = "1+"
-                if (calories.isEmpty()) calories = "1+"
+                if (filterParams.time.isEmpty()) filterParams.time = "1+"
+                if (filterParams.calories.isEmpty()) filterParams.calories = "1+"
                 val response = recipeRepository.getList(
-                    searchingString = search.lowercase(),
-                    mealType = mealType,
-                    cuisineType = cuisineType,
-                    time = time,
-                    calories = calories
+                    searchingString = filterParams.search.lowercase(),
+                    mealType = filterParams.mealType,
+                    cuisineType = filterParams.cuisineType,
+                    time = filterParams.time,
+                    calories = filterParams.calories
                 )
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful) {
@@ -70,4 +68,11 @@ class RecipeViewModel(
     }
 }
 
+data class RecipeFilterParams(
+    var search: String,
+    var mealType: List<String>,
+    var cuisineType: List<String>,
+    var time: String,
+    var calories: String
+)
 

@@ -6,11 +6,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.receipts.db.RecipeDao
 import com.example.receipts.model.RecipeEntity
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class DBViewModel(private val recipeDao: RecipeDao) : ViewModel() {
+@HiltViewModel
+class DBViewModel @Inject constructor(
+    private val recipeDao: RecipeDao
+) : ViewModel() {
     val recipesList = MutableLiveData<List<RecipeEntity>>()
     var recipeLiveData: LiveData<RecipeEntity?> = MutableLiveData()
 

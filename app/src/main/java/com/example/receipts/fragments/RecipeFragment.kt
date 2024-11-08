@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.receipts.R
@@ -15,9 +16,10 @@ import com.example.receipts.db.RecipeDatabase
 import com.example.receipts.model.Ingredient
 import com.example.receipts.model.RecipeEntity
 import com.example.receipts.viewmodels.DBViewModel
-import com.example.receipts.viewmodels.DBViewModelFactory
 import com.squareup.picasso.Picasso
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class RecipeFragment : Fragment() {
     companion object {
         var name: String = ""
@@ -30,7 +32,7 @@ class RecipeFragment : Fragment() {
 
     private lateinit var binding: FragmentRecipeBinding
     private lateinit var ingredientAdapter: IngredientAdapter
-    private lateinit var viewModel: DBViewModel
+    private val viewModel: DBViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -49,13 +51,9 @@ class RecipeFragment : Fragment() {
         val imageUrl = arguments?.getString("image") ?: ""
         calories = arguments?.getDouble("calories") ?: 0.0
         Picasso.get().load(imageUrl).into(binding.dishImage)
-        val database = RecipeDatabase.getInstance(requireContext())
         ingredients = arguments?.getParcelableArrayList("ingredients") ?: ArrayList()
         ingredientAdapter =
             IngredientAdapter(ingredients)
-        viewModel = ViewModelProvider(this, DBViewModelFactory(database.recipeDao())).get(
-            DBViewModel::class.java
-        )
         binding.ingredientRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.ingredientRecyclerView.adapter = ingredientAdapter
         binding.apply {
