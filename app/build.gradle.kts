@@ -44,6 +44,9 @@ android {
 dependencies {
 
     implementation("androidx.room:room-runtime:2.6.1")
+    implementation("androidx.fragment:fragment-testing:1.8.5")
+    implementation("androidx.test.ext:junit-ktx:1.2.1")
+    testImplementation("com.google.dagger:hilt-android-testing:2.44")
     kapt("androidx.room:room-compiler:2.6.1")
     kapt("com.android.databinding:compiler:3.1.4")
     implementation("androidx.core:core-ktx:1.12.0")
@@ -77,9 +80,21 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.44")
     kapt("com.google.dagger:hilt-android-compiler:2.44")
     annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
+    kaptAndroidTest("com.google.dagger:hilt-compiler:2.44")
 
+    // Для Mockito и JUnit
+    testImplementation("org.mockito:mockito-core:3.12.4")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:3.2.0")
     testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
+    androidTestImplementation("org.mockito:mockito-android:3.12.4")
+
+    androidTestImplementation("com.google.dagger:hilt-android-testing:2.44")
+
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.5.1")
+    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.0")
+    testImplementation ("androidx.arch.core:core-testing:2.1.0")
+    testImplementation ("org.powermock:powermock-module-junit4:2.0.9")
+    testImplementation ("org.powermock:powermock-api-mockito2:2.0.9")
 }

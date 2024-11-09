@@ -1,19 +1,26 @@
 package com.example.receipts.service
 
-class RecipeRepository {
+import com.example.receipts.model.Hit
+import retrofit2.Response
+import javax.inject.Inject
+
+class RecipeRepository @Inject constructor(private val api: Api) {
     suspend fun getList(
         searchingString: String,
         time: String,
         calories: String,
         mealType: List<String>,
         cuisineType: List<String>
-    ) =
-        RetrofitService.instance.getAllRecipes(
-            "public",
+    ): Response<Hit> {
+        return api.getAllRecipes(
+            type = "public",
             q = searchingString,
-            calories = calories,
             time = time,
+            calories = calories,
             mealType = mealType,
             cuisineType = cuisineType
         )
+    }
 }
+
+

@@ -1,11 +1,12 @@
-package com.example.receipts.di
+package com.example.receipts.viewmodels
 
 import android.content.Context
 import androidx.room.Room
 import com.example.receipts.db.RecipeDao
 import com.example.receipts.db.RecipeDatabase
+import com.example.receipts.service.Api
 import com.example.receipts.service.RecipeRepository
-import com.example.receipts.viewmodels.RecipeFilterParams
+import com.example.receipts.service.RetrofitService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -45,7 +46,12 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideRecipeRepository(): RecipeRepository {
-        return RecipeRepository()
+    fun provideRecipeRepository(api: Api): RecipeRepository {
+        return RecipeRepository(api)
+    }
+    @Provides
+    @Singleton
+    fun provideApi(): Api {
+        return RetrofitService.instance
     }
 }

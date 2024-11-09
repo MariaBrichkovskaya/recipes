@@ -30,7 +30,7 @@ class RecipeFragment : Fragment() {
         lateinit var ingredients: ArrayList<Ingredient>
     }
 
-    private lateinit var binding: FragmentRecipeBinding
+    lateinit var binding: FragmentRecipeBinding
     private lateinit var ingredientAdapter: IngredientAdapter
     private val viewModel: DBViewModel by viewModels()
     override fun onCreateView(
