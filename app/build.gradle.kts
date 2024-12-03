@@ -7,6 +7,7 @@ plugins {
 }
 
 android {
+    testOptions.unitTests.isIncludeAndroidResources = true
     namespace = "com.example.receipts"
     compileSdk = 34
 
@@ -19,6 +20,7 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+
 
     buildTypes {
         release {
@@ -97,4 +99,8 @@ dependencies {
     testImplementation ("androidx.arch.core:core-testing:2.1.0")
     testImplementation ("org.powermock:powermock-module-junit4:2.0.9")
     testImplementation ("org.powermock:powermock-api-mockito2:2.0.9")
+    testImplementation ("androidx.test.espresso:espresso-core:3.4.0")
+    testImplementation( "androidx.test.espresso:espresso-contrib:3.4.0")
+    testImplementation( "androidx.test:runner:1.4.0")
+    testImplementation( "androidx.test:rules:1.4.0")
 }

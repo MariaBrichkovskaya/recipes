@@ -1,4 +1,4 @@
-package com.example.receipts
+package com.example.receipts.unit
 
 import org.junit.Test
 

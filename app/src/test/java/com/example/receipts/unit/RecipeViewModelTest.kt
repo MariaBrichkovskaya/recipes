@@ -1,30 +1,18 @@
-package com.example.receipts
+package com.example.receipts.unit
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.Observer
 import com.example.receipts.model.Hit
-import com.example.receipts.model.Recipe
 import com.example.receipts.service.Api
 import com.example.receipts.service.RecipeRepository
-import com.example.receipts.service.RetrofitService
-import com.example.receipts.viewmodels.RecipeFilterParams
-import com.example.receipts.viewmodels.RecipeViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.*
-import org.junit.After
 
-import org.mockito.ArgumentMatchers
 import org.mockito.Mock
 import org.mockito.Mockito.*
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.runBlocking
 import okhttp3.ResponseBody
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
 import retrofit2.Response
 
@@ -43,7 +31,7 @@ class RecipeRepositoryTest {
     }
 
     @Test
-    fun` getList should return successful response`() = runBlocking {
+    fun` getList should return successful response`() = runBlockingTest {
         val mockResponse = Response.success(Hit(arrayListOf()))
         val searchingString = "salmon"
         val time = "1+"
@@ -68,7 +56,7 @@ class RecipeRepositoryTest {
     }
 
     @Test
-    fun `getList should handle error response`() = runBlocking {
+    fun `getList should handle error response`() = runBlockingTest {
         val mockResponse = Response.error<Hit>(404, ResponseBody.create(null, "Not Found"))
         val searchingString = "salmon"
         val time = "1+"
